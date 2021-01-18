@@ -39,6 +39,12 @@
 	aliases {
 		spi8 = &spi_8;
 	};
+	reserved_memory: reserved-memory {
+		ramoops@9ff00000 {
+			compatible = "ramoops";
+			reg = <0x0 0x9ff00000 0x0 0x300000>;
+		};
+	};
 	mtp_batterydata: qcom,battery-data {
 		qcom,batt-id-range-pct = <15>;
 		#include "batterydata-d4-sunwoda-5300mAh.dtsi"
@@ -46,6 +52,10 @@
 		/delete-node/ qcom,ascent-3450mah;
 		/delete-node/ qcom,itech-3000mah;
 	};
+};
+
+&apps_iommu{
+	qcom,no-aarch64;
 };
 
 &other_ext_mem {
@@ -190,10 +200,10 @@
 	qcom,lra-auto-res-mode="qwd";
 	qcom,lra-high-z="opt1";
 	qcom,lra-res-cal-period = <4>;
-	qcom,wave-play-rate-us = <5100>;
+	qcom,wave-play-rate-us = <7500>;
 	qcom,wave-shape = "sine";
-	qcom,vmax-mv = <2088>;
-	qcom,brake-pattern = [03 02 01 00];
+	qcom,vmax-mv = <2750>;
+	qcom,brake-pattern = <3 2 1 0>;
 	qcom,misc-trim-error-rc19p2-clk-reg-present;
 };
 
