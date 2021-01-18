@@ -12,32 +12,13 @@
  * GNU General Public License for more details.
  */
 
-&int_codec {
-	status = "okay";
-	qcom,model = "msm8953-snd-card-mtp";
-	qcom,msm-hs-micbias-type = "external";
-};
+/dts-v1/;
 
-&pm8953_diangu_dig {
-	status = "okay";
-};
+#include "msm8953.dtsi"
+#include "msm8953-oxygen.dtsi"
 
-&pm8953_diangu_analog {
-	status = "okay";
-};
-
-&wsa881x_i2c_e {
-	status = "disabled";
-};
-
-&wsa881x_i2c_44 {
-	status = "disabled";
-};
-
-&wsa881x_i2c_f {
-	status = "disabled";
-};
-
-&wsa881x_i2c_45 {
-	status = "disabled";
+/ {
+	model = "Qualcomm Technologies, Inc. MSM8953 MTP";
+	compatible = "qcom,msm8953-mtp", "qcom,msm8953", "qcom,mtp";
+	qcom,board-id= <26 0>;
 };
