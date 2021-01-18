@@ -74,8 +74,8 @@
 	pinctrl-7 = <&cdc_pdm_lines_act &cdc_pdm_comp_lines_act
 		&cdc_pdm_lines_2_act &cross_conn_det_sus
 		&pri_tlmm_lines_act &pri_tlmm_ws_act>;
-	asoc-codec = <&stub_codec>, <&pm8953_diangu_dig>;
-	asoc-codec-names = "msm-stub-codec.1", "cajon_codec";
+	asoc-codec = <&stub_codec>, <&msm_digital_codec>;
+	asoc-codec-names = "msm-stub-codec.1", "msm-dig-codec";
 	/delete-property/ pinctrl-8;
 	/delete-property/ pinctrl-9;
 	/delete-property/ pinctrl-10;
@@ -91,14 +91,6 @@
 	/delete-property/ qcom,msm-vdd-wsa-switch-current;
 	/delete-property/ qcom,hdmi-dba-codec-rx;
 	/delete-property/ qcom,cdc-us-euro-gpios;
-};
-
-&wsa881x_i2c_e {
-	status = "disabled";
-};
-
-&wsa881x_i2c_44 {
-	status = "disabled";
 };
 
 &wsa881x_i2c_f {
