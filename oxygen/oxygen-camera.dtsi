@@ -11,6 +11,17 @@
 * GNU General Public License for more details.
 */
 
+&soc {
+	led_flash0: qcom,camera-flash {
+		cell-index = <0>;
+		compatible = "qcom,camera-flash";
+		qcom,flash-type = <1>;
+		qcom,flash-source = <&pmi8950_flash0 &pmi8950_flash1>;
+		qcom,torch-source = <&pmi8950_torch0 &pmi8950_torch1>;
+		qcom,switch-source = <&pmi8950_switch>;
+	};
+};
+
 &vfe0 {
 	reg = <0x1b10000 0x1000>,
 		<0x1b40000 0x200>,
@@ -67,68 +78,6 @@
 	/delete-property/ qcom,gpio-vana;
 };
 
-&eeprom1 {
-	cell-index = <0>;
-	qcom,slave-addr = <0xb0>;
-	qcom,eeprom-name = "oxygen_ov12a_sunny";
-	qcom,i2c-freq-mode = <1>;
-	xiaomi,vendor-id-count = <1>;
-	xiaomi,eeprom-flag-offset0 = <0 0>;
-	xiaomi,eeprom-valid-flag0 = <0 0>;
-	xiaomi,vendor-id-offset0 = <0 0x0001>;
-	reg = <0x0>;
-	qcom,num-blocks = <1>;
-	qcom,page0 = <0 0 0 0 0 0>;
-	qcom,poll0 = <0 0 0 0 0 0>;
-	qcom,saddr0 = <0xb0>;
-	qcom,mem0 = <2188 0x00 2 0 1 0>;
-	cam_vaf-supply = <&pm8953_l22>;
-	qcom,cam-vreg-name = "cam_vaf";
-	qcom,cam-vreg-min-voltage = <2850000>;
-	qcom,cam-vreg-max-voltage = <2850000>;
-	qcom,cam-vreg-op-mode = <80000>;
-	qcom,cam-power-seq-type = "sensor_vreg";
-	qcom,cam-power-seq-val = "cam_vaf";
-	qcom,cam-power-seq-cfg-val = <1>;
-	qcom,cam-power-seq-delay = <1>;
-	pinctrl-0 = <&cam_sensor_mclk0_default>;
-	pinctrl-1 = <&cam_sensor_mclk0_sleep>;
-	gpios = <&tlmm 26 0>;
-	qcom,gpio-req-tbl-num = <0>;
-	qcom,gpio-req-tbl-flags = <1>;
-	qcom,gpio-req-tbl-label = "CAMIF_MCLK0";
-	clocks = <&clock_gcc clk_mclk0_clk_src>,
-			<&clock_gcc clk_gcc_camss_mclk0_clk>;
-	qcom,clock-rates = <24000000 0>;
-	
-	/delete-property/ qcom,page1;
-	/delete-property/ qcom,poll1;
-	/delete-property/ qcom,mem1;
-	/delete-property/ qcom,page2;
-	/delete-property/ qcom,poll2;
-	/delete-property/ qcom,mem2;
-	/delete-property/ qcom,page3;
-	/delete-property/ qcom,poll3;
-	/delete-property/ qcom,mem3;
-	/delete-property/ qcom,page4;
-	/delete-property/ qcom,poll4;
-	/delete-property/ qcom,mem4;
-	/delete-property/ qcom,page5;
-	/delete-property/ qcom,poll5;
-	/delete-property/ qcom,mem5;
-	/delete-property/ qcom,page6;
-	/delete-property/ qcom,poll6;
-	/delete-property/ qcom,mem6;
-	/delete-property/ qcom,page7;
-	/delete-property/ qcom,poll7;
-	/delete-property/ qcom,mem7;
-	/delete-property/ cam_vio-supply;
-	/delete-property/ cam_vdig-supply;
-	/delete-property/ cam_vana-supply;
-	/delete-property/ qcom,gpio-reset;
-	/delete-property/ qcom,gpio-standby;
-};
-
 &eeprom2 {
 	qcom,slave-addr = <0xa0>;
 	qcom,eeprom-name = "oxygen_ov12a_ofilm";
@@ -172,6 +121,46 @@
 };
 
 &cci {
+	eeprom1: qcom,eeprom@1 {
+		cell-index = <0>;
+		compatible = "qcom,eeprom";
+		qcom,slave-addr = <0xb0>;
+		qcom,eeprom-name = "oxygen_ov12a_sunny";
+		qcom,i2c-freq-mode = <1>;
+		xiaomi,vendor-id-count = <1>;
+		xiaomi,eeprom-flag-offset0 = <0 0>;
+		xiaomi,eeprom-valid-flag0 = <0 0>;
+		xiaomi,vendor-id-offset0 = <0 0x0001>;
+		qcom,cci-master = <0>;
+		reg = <0x0>;
+		qcom,num-blocks = <1>;
+		qcom,page0 = <0 0 0 0 0 0>;
+		qcom,poll0 = <0 0 0 0 0 0>;
+		qcom,saddr0 = <0xb0>;
+		qcom,mem0 = <2188 0x00 2 0 1 0>;
+		cam_vaf-supply = <&pm8953_l22>;
+		qcom,cam-vreg-name = "cam_vaf";
+		qcom,cam-vreg-min-voltage = <2850000>;
+		qcom,cam-vreg-max-voltage = <2850000>;
+		qcom,cam-vreg-op-mode = <80000>;
+		qcom,cam-power-seq-type = "sensor_vreg";
+		qcom,cam-power-seq-val = "cam_vaf";
+		qcom,cam-power-seq-cfg-val = <1>;
+		qcom,cam-power-seq-delay = <1>;
+		qcom,gpio-no-mux = <0>;
+		pinctrl-names = "cam_default", "cam_suspend";
+		pinctrl-0 = <&cam_sensor_mclk0_default>;
+		pinctrl-1 = <&cam_sensor_mclk0_sleep>;
+		gpios = <&tlmm 26 0>;
+		qcom,gpio-req-tbl-num = <0>;
+		qcom,gpio-req-tbl-flags = <1>;
+		qcom,gpio-req-tbl-label = "CAMIF_MCLK0";
+		status = "ok";
+		clocks = <&clock_gcc clk_mclk0_clk_src>,
+				<&clock_gcc clk_gcc_camss_mclk0_clk>;
+		clock-names = "cam_src_clk", "cam_clk";
+		qcom,clock-rates = <24000000 0>;
+	};
 	eeprom3: qcom,eeprom@3 {
 		cell-index = <3>;
 		reg = <0x03>;
@@ -348,56 +337,5 @@
 			"csiphy_timer_src_clk", "csiphy_timer_clk",
 			"camss_ahb_src", "camss_ahb_clk";
 		qcom,clock-rates = <0 61540000 200000000 0 0 0>;
-	};
-	qcom,csid@1b30000  {
-		clocks = <&clock_gcc clk_gcc_camss_top_ahb_clk>,
-			<&clock_gcc clk_gcc_camss_ispif_ahb_clk>,
-			<&clock_gcc clk_gcc_camss_csi0_ahb_clk>,
-			<&clock_gcc clk_csi0_clk_src>,
-			<&clock_gcc clk_gcc_camss_csi0phy_clk>,
-			<&clock_gcc clk_gcc_camss_csi0_clk>,
-			<&clock_gcc clk_gcc_camss_csi0pix_clk>,
-			<&clock_gcc clk_gcc_camss_csi0rdi_clk>,
-			<&clock_gcc clk_gcc_camss_ahb_clk>;
-		clock-names = "camss_top_ahb_clk",
-			"ispif_ahb_clk", "csi_ahb_clk", "csi_src_clk",
-			"csi0_phy_clk",
-			"csi_clk",  "csi_pix_clk",
-			"csi_rdi_clk", "camss_ahb_clk";
-		qcom,clock-rates = <0 61540000 0 200000000 0 0 0 0 0>;
-	};
-	qcom,csid@1b30400 {
-		clocks = <&clock_gcc clk_gcc_camss_top_ahb_clk>,
-			<&clock_gcc clk_gcc_camss_ispif_ahb_clk>,
-			<&clock_gcc clk_gcc_camss_csi1_ahb_clk>,
-			<&clock_gcc clk_csi1_clk_src>,
-			<&clock_gcc clk_gcc_camss_csi1phy_clk>,
-			<&clock_gcc clk_gcc_camss_csi1_clk>,
-			<&clock_gcc clk_gcc_camss_csi1pix_clk>,
-			<&clock_gcc clk_gcc_camss_csi1rdi_clk>,
-			<&clock_gcc clk_gcc_camss_ahb_clk>;
-		clock-names = "camss_top_ahb_clk",
-			"ispif_ahb_clk", "csi_ahb_clk", "csi_src_clk",
-			"csi1_phy_clk",
-			"csi_clk", "csi_pix_clk",
-			"csi_rdi_clk", "camss_ahb_clk";
-		qcom,clock-rates = <0 61540000 0 200000000 0 0 0 0 0>;
-	};
-	qcom,csid@1b30800 {
-		clocks = <&clock_gcc clk_gcc_camss_top_ahb_clk>,
-			<&clock_gcc clk_gcc_camss_ispif_ahb_clk>,
-			<&clock_gcc clk_gcc_camss_csi2_ahb_clk>,
-			<&clock_gcc clk_csi2_clk_src>,
-			<&clock_gcc clk_gcc_camss_csi2phy_clk>,
-			<&clock_gcc clk_gcc_camss_csi2_clk>,
-			<&clock_gcc clk_gcc_camss_csi2pix_clk>,
-			<&clock_gcc clk_gcc_camss_csi2rdi_clk>,
-			<&clock_gcc clk_gcc_camss_ahb_clk>;
-		clock-names = "camss_top_ahb_clk",
-			"ispif_ahb_clk", "csi_ahb_clk", "csi_src_clk",
-			"csi2_phy_clk",
-			"csi_clk", "csi_pix_clk",
-			"csi_rdi_clk", "camss_ahb_clk";
-		qcom,clock-rates = <0 61540000 0 200000000 0 0 0 0 0>;
 	};
 };

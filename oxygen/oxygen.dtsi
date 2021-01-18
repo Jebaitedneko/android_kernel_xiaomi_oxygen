@@ -12,7 +12,6 @@
 */
 
 #include "oxygen-general.dtsi"
-#include "oxygen-cpu-regulator.dtsi"
 #include "oxygen-pinctrl.dtsi"
 #include "oxygen-audio.dtsi"
 #include "oxygen-mdss.dtsi"

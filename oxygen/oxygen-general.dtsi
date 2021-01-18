@@ -12,6 +12,30 @@
 */
 
 / {
+	firmware: firmware {
+		android {
+			compatible = "android,firmware";
+			fstab {
+				compatible = "android,fstab";
+				vendor {
+					compatible = "android,vendor";
+					dev = "/dev/block/platform/soc/7824900.sdhci/by-name/cust";
+					type = "ext4";
+					mnt_flags = "ro,barrier=1,discard";
+					fsmgr_flags = "wait";
+					status = "ok";
+				};
+				system {
+					compatible = "android,system";
+					dev = "/dev/block/platform/soc/7824900.sdhci/by-name/system";
+					type = "ext4";
+					mnt_flags = "ro,barrier=1,discard";
+					fsmgr_flags = "wait";
+					status = "ok";
+				};
+			};
+		};
+	};
 	aliases {
 		spi8 = &spi_8;
 	};
@@ -175,6 +199,7 @@
 	#include "batterydata-d4-coslight-5300mAh.dtsi"
 
 	/delete-node/ qcom,ascent-3450mah;
+	/delete-node/ qcom,itech-3000mah;
 };
 
 &soc {
@@ -227,6 +252,18 @@
 			<0x000a0164 0x4>;
 		reg-names = "vidc", "efuse", "efuse2";
 		qcom,capability-version = <0x00002000 0x0d>;
+		qcom,dcvs-tbl =
+			/* Dec UHD@30 H.264, HEVC, VP8, VP9 - NOM to NOM+*/
+			<816000 816000 979200 0x3f00000c>,
+
+			/* Enc UHD@30 H.264/HEVC Turbo to Nom+ */
+			<897600 821100 979200 0x4000004>,
+
+			/* Enc True4K@24 H.264/HEVC Nom to Nom+ */
+			<816000 720000 835584 0x4000004>;
+		qcom,dcvs-limit =
+			<32400 24>, /* Encoder UHD */
+			<32400 24>; /* Decoder UHD */
 	};
 	gpio_keys {
 		hall_key {
@@ -338,5 +375,6 @@
 				"iface_clk", "bus_clk";
 		qcom,ce-opp-freq = <100000000>;
 	};
+
 	/delete-node/ qseecom@85b00000;
 };
